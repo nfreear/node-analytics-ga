@@ -1,0 +1,31 @@
+{
+  "name": "node-analytics-ga",
+  "version": "1.0.0-alpha",
+  "description": "A basic wrapper around Google Analytics, that is Node and Browserify-compatible, and tailored to embeddable widgets.",
+  "license": "MIT",
+  "main": "./index.js",
+  "author": "Nick Freear {@nfreear}",
+  "repository": "https://github.com/nfreear/node-analytics-ga",
+  "bugs": "https://github.com/nfreear/node-analytics-ga/issues",
+  "dependencies": { },
+  "devDependencies": {
+    "semistandard": "^11.0.0"
+  },
+  "engines": {
+    "node": ">= 4.0.0"
+  },
+  "scripts": {
+    "test": "semistandard"
+  },
+  "keywords": [
+    "google analytics",
+    "ga",
+    "universal analytics",
+    "gaad-widget",
+    "widget",
+    "IET-OU"
+  ],
+  "//" : {
+    "https://npmjs.com/package/universal-ga": "Not flexible enough for widget-context."
+  }
+}
