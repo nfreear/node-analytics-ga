@@ -14,6 +14,8 @@ var LOC = WIN.location;
 
 var analyticsCfg = {};
 var enable = false;
+var gaFn;
+var sendName;
 
 /** create
  * @public
@@ -27,7 +29,7 @@ var enable = false;
  */
 function create (config) {
   // Setup private vars.
-  enable = config && config.id && config.name;
+  enable = config && config.id;
   analyticsCfg = config;
 
   if (!enable) {
@@ -46,8 +48,11 @@ function create (config) {
  * @private
  */
 function createTracker () {
+  gaFn = WIN[ analyticsCfg.fn ];
+  sendName = analyticsCfg.name ? analyticsCfg.name + '.send' : 'send';
+
   // ga('create', 'UA-XXXXX-Y', 'auto');
-  WIN[ analyticsCfg.fn ]('create', analyticsCfg.id, 'auto', analyticsCfg.name);
+  gaFn('create', analyticsCfg.id, 'auto', analyticsCfg.name);
 
   console.warn('analytics: ', analyticsCfg);
 
@@ -60,10 +65,13 @@ function createTracker () {
 function pageView () {
   if (!enable) return;
 
-  var path = LOC.host + LOC.pathname + LOC.search.replace(/^\?/, '!');
+  var path = null;
+  if (analyticsCfg.isWidget) {
+    // Widgets: include "host" in the path sent to pageview.
+    path = LOC.host + LOC.pathname + LOC.search.replace(/^\?/, '!');
+  }
 
-  // ga('send', 'pageview');
-  WIN[ analyticsCfg.fn ](analyticsCfg.name + '.send', 'pageview', path);
+  gaFn(sendName, 'pageview', path);
 }
 
 /** sendEvent.
@@ -72,15 +80,14 @@ function pageView () {
 function sendEvent (cat, act, label, value) {
   if (!enable) return;
 
-  // ga('send', 'event', cat, act, label, value);
-  WIN[ analyticsCfg.fn ](analyticsCfg.name + '.send', 'event', cat, act, label, value);
+  gaFn(sendName, 'event', cat, act, label, value);
   console.warn('analytics.event: ', cat, act, label, value);
 }
 
 /** includeJavascript.
  * @private
  */
-function includeJavascript (gaFn) {
+function includeJavascript (gaName) {
   var existingJs = DOC.querySelector('script[ src *= google-analytics ]');
 
   if (!existingJs) {
@@ -88,7 +95,7 @@ function includeJavascript (gaFn) {
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', gaFn /* || 'ga' */);
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', gaName /* || 'ga' */);
      /* eslint-enable */
   }
 }

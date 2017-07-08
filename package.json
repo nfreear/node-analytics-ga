@@ -2,6 +2,7 @@
   "name": "node-analytics-ga",
   "version": "1.0.0-alpha",
   "description": "A basic wrapper around Google Analytics, that is Node and Browserify-compatible, and tailored to embeddable widgets.",
+  "private": true,
   "license": "MIT",
   "main": "./index.js",
   "author": "Nick Freear {@nfreear}",
@@ -21,11 +22,12 @@
     "google analytics",
     "ga",
     "universal analytics",
+    "universal-ga",
     "gaad-widget",
     "widget",
     "IET-OU"
   ],
   "//" : {
-    "https://npmjs.com/package/universal-ga": "Not flexible enough for widget-context."
+    "https://npmjs.com/package/universal-ga": "Not yet flexible enough for widget-context ;)."
   }
 }
